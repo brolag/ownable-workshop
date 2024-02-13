@@ -1,217 +1,217 @@
-# Ownable Workshop
+# Taller de Ownable
 
-In this workshop, you will learn how to create an Ownable contract, which assigns a `ContractAddress` to be the owner of the contract. In addition, you will learn about how components can be implemented and finally use OpenZeppelin's Ownable component.
+En este taller, aprenderás a crear un contrato Ownable, el cual asigna una `ContractAddress` para ser el propietario del contrato. Además, aprenderás cómo se pueden implementar componentes y, finalmente, usar el componente Ownable de OpenZeppelin.
 
-This workshop is a continuation of the [Counter Workshop](https://github.com/starknet-edu/counter-workshop/tree/master). If you haven't completed it, please do so.
+Este taller es una continuación del [Taller de Counter Versión Oficial](https://github.com/starknet-edu/counter-workshop/tree/master) o [Taller de Counter Versión StarknetEs Pioneros II](https://github.com/Nadai2010/counter-workshop). Si no lo has completado, por favor, hazlo.
 
-After completing each step, run the associated script to verify it has been implemented correctly.
+Después de completar cada paso, ejecuta el script asociado para verificar que se haya implementado correctamente.
 
-Use the [Cairo book](https://book.cairo-lang.org/ch00-00-introduction.html) and the [Starknet docs](https://docs.starknet.io/documentation/) as a reference.
+Utiliza el [libro de Cairo](https://book.cairo-lang.org/ch00-00-introduction.html) y la [documentación de Starknet](https://docs.starknet.io/documentation/) como referencia.
 
-## Setup
+## Configuración
 
-1. Clone this repository
-2. Create a new file called `counter.cairo` inside the `src` folder
-3. Copy the final code from the [Counter Workshop](https://github.com/starknet-edu/counter-workshop/blob/step6/src/prev_solution.cairo) into the `counter.cairo` file
+1. Clona este repositorio.
+2. Crea un nuevo archivo llamado `counter.cairo` dentro de la carpeta `src`.
+3. Copia el código final del [Taller de Counter Versión Oficial](https://github.com/starknet-edu/counter-workshop/blob/step6/src/prev_solution.cairo) o [Taller de Counter Versión StarknetEs Pioneros II](https://github.com/Nadai2010/counter-workshop/blob/step6/src/prev_solution.cairo) en el archivo `counter.cairo`.
 
-> **Note:** You'll be working on the `counter.cairo` and `ownable.cairo` files to complete the requirements of each step. The folder `prev_solution` will show up in future steps as a way to catch up with the workshop if you fall behind. **Don't modify that file**.
+> **Nota:** Trabajarás en los archivos `counter.cairo` y `ownable.cairo` para completar los requisitos de cada paso. La carpeta `prev_solution` aparecerá en futuros pasos como una forma de ponerte al día con el taller si te quedas atrás. **No modifiques ese archivo**.
 
-The next setup steps will depend on wether you prefer using Docker to manage global dependencies or not.
+Los siguientes pasos de configuración dependerán de si prefieres usar Docker para gestionar dependencias globales o no.
 
-### Option 1: Without Docker
+### Opción 1: Sin Docker
 
-4. Install Scarb 2.4.4 ([instructions](https://docs.swmansion.com/scarb/download.html#install-via-asdf))
-1. Install Starknet Foundry 0.14.0 ([instructions](https://foundry-rs.github.io/starknet-foundry/getting-started/installation.html))
-1. Install the Cairo 1.0 extension for VSCode ([marketplace](https://marketplace.visualstudio.com/items?itemName=starkware.cairo1))
-1. Run the tests to verify the project is setup correctly
-
-```bash
-$ scarb test
-```
-
-### Option 2: With Docker
-
-4. Make sure Docker is installed and running
-5. Install the Dev Containers extension for VSCode ([marketplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
-6. Launch an instance of VSCode inside of the container by going to **View -> Command Palette -> Dev Containers: Rebuild and Reopen in Container**
-7. Open VSCode's integrated terminal and run the tests to verify the project is setup correctly
+4. Instala Scarb 2.4.4 ([instrucciones](https://docs.swmansion.com/scarb/download.html#install-via-asdf)).
+5. Instala Starknet Foundry 0.17.0 ([instrucciones](https://foundry-rs.github.io/starknet-foundry/getting-started/installation.html)).
+6. Instala la extensión Cairo 1.0 para VSCode ([mercado](https://marketplace.visualstudio.com/items?itemName=starkware.cairo1)).
+7. Ejecuta las pruebas para verificar que el proyecto esté configurado correctamente.
 
 ```bash
-$ scarb test
+scarb test
 ```
 
-> **Note:** All the commands shown from this point on will assume that you are using the integrated terminal of a VSCode instance running inside the container. If you want to run the tests on a different terminal you'll need to use the command `docker compose run test`.
+### Opción 2: Con Docker
 
-## Step 1
-
-### Goal
-
-In this step, you will need to do the following:
-
-- store a new variable named `owner` as `ContractAddress` type in the `Storage` struct
-- modify the constructor function so that it accepts a new input variable named `initial_owner` and then updates the `owner` variable from the `Storage` with this value
-- implement a public function named `owner()` which returns the value of the `owner` variable
-
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
-
-### Verification
-
-When completed, execute the test suite to verify you've met all the requirements for this section.
+4. Asegúrate de que Docker esté instalado y funcionando.
+5. Instala la extensión de Dev Containers para VSCode ([marketplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)).
+6. Lanza una instancia de VSCode dentro del contenedor yendo a **Ver -> Paleta de comandos -> Dev Containers: Reconstruir y reabrir en contenedor**.
+7. Abre el terminal integrado de VSCode y ejecuta las pruebas para verificar que el proyecto esté configurado correctamente.
 
 ```bash
-$ snforge test
+scarb test
 ```
 
-### Hints
+> **Nota:** Todos los comandos mostrados a partir de este punto asumirán que estás utilizando el terminal integrado de una instancia de VSCode ejecutándose dentro del contenedor. Si deseas ejecutar las pruebas en un terminal diferente, necesitarás usar el comando `docker compose run test`.
 
-- create a new public interface called `IOwnable<T>{}` and add the function `owner()`
-- create a new `impl` which implements the `IOwnable` interface and add the `#[abi(embed_v0)]` to expose the `impl`
+## Paso 1
 
-## Step 2
+### Objetivo
 
-### Goal
+En este paso, necesitarás hacer lo siguiente:
 
-In this step, you will need to do the following:
+- Almacenar una nueva variable llamada `owner` como tipo `ContractAddress` en la estructura `Storage`.
+- Modificar la función del constructor para que acepte una nueva variable de entrada llamada `initial_owner` y luego actualice la variable `owner` en `Storage` con este valor.
+- Implementar una función pública llamada `owner()` que devuelve el valor de la variable `owner`.
 
-- create a private function named `assert_only_owner` which checks:
-- protect the `increase_counter` function with the `assert_only_owner` function
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+### Verificación
 
-### Requirements
-
-The `assert_only_owner` function should:
-
-- check that the `caller` is not the zero address, otherwise, it will panic with the following message `'Caller is the zero address`
-- check that the `caller` is the same as the `owner` which is stored in the `Storage`, otherwise, it will panic with the following message `'Caller is not the owner'`
-
-### Verification
-
-When completed, execute the test suite to verify you've met all the requirements for this section.
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-- You can read who the caller is by using the syscall `get_caller_address` available in the `starknet` module
-- You can check for the zero address with the `.is_zero()` function on the variable itself
-- To read more about Private Functions, check [Chapter 12.3.2 Private functions](https://book.cairo-lang.org/ch99-01-03-02-contract-functions.html#3-private-functions)
+- Crea una nueva interfaz pública llamada `IOwnable<T>{}` y añade la función `owner()`.
+- Crea una nueva `impl` que implemente la interfaz `IOwnable` y añade `#[abi(embed_v0)]` para exponer la `impl`.
 
-## Step 3
+## Paso 2
 
-### Goal
+### Objetivo
 
-In this step, you will need to do create a public function named `transfer_ownership()` which receives as input variable `new_owner` as `ContractAddress` type and updates `owner` from the `Storage` with the new value.
+En este paso, necesitarás hacer lo siguiente:
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+- Crear una función privada llamada `assert_only_owner` que verifica:
+- Proteger la función `increase_counter` con la función `assert_only_owner`.
 
-### Requirements
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-The `transfer_ownership()` function should:
+### Requisitos
 
-- be in the `IOwnable` interface
-- check that the `new_owner` variable is not the zero address, otherwise, it will panic with the following message `'New owner is the zero address'`
-- check that only the owner can access the function
-- update the `owner` variable with the `new_owner`
+La función `assert_only_owner` debe:
 
-> **Note:** You can implement a private function which only updates the `owner` variable with the `new_owner` variable. We will call this private function several times and it makes the code modular. You can name this private function as `_transfer_ownership()`.
+- Verificar que el `caller` no sea la dirección cero, de lo contrario, entrará en pánico con el siguiente mensaje: `Caller is the zero address`.
+- Verificar que el `caller` sea el mismo que el `owner` almacenado en `Storage`, de lo contrario, entrará en pánico con el siguiente mensaje: `Caller is not the owner`.
 
-### Verification
+### Verificación
 
-When completed, execute the test suite to verify you've met all the requirements for this section.
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-- Make sure that the panic messages are the same as stated in the **Requirements** sections, otherwise, some test will fail.
+- Puedes leer quién es el llamante usando el syscall `get_caller_address` disponible en el módulo `starknet`.
+- Puedes verificar la dirección cero con la función `.is_zero()` en la variable misma.
+- Para leer más sobre Funciones Privadas, consulta [Capítulo 12.3.2 Funciones Privadas](https://book.cairo-lang.org/ch99-01-03-02-contract-functions.html#3-private-functions).
 
-## Step 4
+## Paso 3
 
-### Goal
+### Objetivo
 
-In this step, you will need to do the following:
+En este paso, necesitarás crear una función pública llamada `transfer_ownership()` que recibe como variable de entrada `new_owner` como tipo `ContractAddress` y actualiza `owner` en `Storage` con el nuevo valor.
 
-- implement an event named `OwnershipTransferred` which emits the `previous_owner` and the `new_owner` variables
-- emit this event when you successfully transfer the ownership of the contract
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+### Requisitos
 
-### Verification
+La función `transfer_ownership()` debe:
 
-When completed, execute the test suite to verify you've met all the requirements for this section.
+- Estar en la interfaz `IOwnable`.
+- Verificar que la variable `new_owner` no sea la dirección cero, de lo contrario, entrará en pánico con el siguiente mensaje: `New owner is the zero address`.
+- Verificar que solo el propietario pueda acceder a la función.
+- Actualizar la variable `owner` con `new_owner`.
+
+> **Nota:** Puedes implementar una función privada que solo actualice la variable `owner` con la variable `new_owner`. Llamaremos varias veces a esta función privada y hace el código modular. Puedes nombrar esta función privada como `_transfer_ownership()`.
+
+### Verificación
+
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-Events are custom data structures that are emitted by a contract. More information about Events can be found in [Chapter 12.3.3 - Contract Events](https://book.cairo-lang.org/ch99-01-03-03-contract-events.html).
+- Asegúrate de que los mensajes de pánico sean los mismos que se indican en las secciones de **Requisitos**, de lo contrario, algunas pruebas fallarán.
 
-## Step 5
+## Paso 4
 
-### Goal
+### Objetivo
 
-In this step, you will need to do create a public function named `renounce_ownership()` which removes the current `owner` and change it to the zero address.
+En este paso, necesitarás hacer lo siguiente:
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+- Implementar un evento llamado `OwnershipTransferred` que emite las variables `previous_owner` y `new_owner`.
+- Emitir este evento cuando transfieras exitosamente la propiedad del contrato.
 
-### Requirements
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-The `renounce_ownership()` function should:
+### Verificación
 
-- be in the `IOwnable` interface
-- check that only the owner can call this function
-
-### Verification
-
-When completed, execute the test suite to verify you've met all the requirements for this section.
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-- You can use `Zeroable::zero()` for the zero address which is available in the `starknet` module
-- You can use the private function `_transfer_ownership` that you created in `Step 3` to avoid code duplication
+Los eventos son estructuras de datos personalizadas que son emitidas por un contrato. Puedes encontrar más información sobre Eventos en [Capítulo 12.3.3 - Eventos de Contratos](https://book.cairo-lang.org/ch99-01-03-03-contract-events.html).
 
-## Step 6
+## Paso 5
 
-### Goal
+### Objetivo
 
-In this step, you will need to do create a private function called `initializer()`, which initializes the owner variable. Modify the constructor function so that you call the private function `initializer()` to initialize the owner.
+En este paso, necesitarás crear una función pública llamada `renounce_ownership()` que elimina al actual `owner` y lo cambia por la dirección cero.
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-### Verification
+### Requisitos
 
-When completed, execute the test suite to verify you've met all the requirements for this section.
+La función `renounce_ownership()` debe:
+
+- Estar en la interfaz `IOwnable`.
+- Verificar que solo el propietario pueda llamar a esta función.
+
+### Verificación
+
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-- You can use the private function `_transfer_ownership` that you created in the `Step 3` to avoid code duplication
+- Puedes usar `Zeroable::zero()` para la dirección cero, que está disponible en el módulo `starknet`.
+- Puedes usar la función privada `_transfer_ownership` que creaste en el `Paso 3` para evitar la duplicación de código.
 
-## Step 7
+## Paso 6
 
-### Goal
+### Objetivo
 
-In this step, you will need to create a new file named `ownable.cairo` and move all the related code to the `Ownable` exercise. The `ownable.cairo` should be created as a normal starknet contract.
+En este paso, necesitarás crear una función privada llamada `initializer()`, que inicializa la variable del propietario. Modifica la función del constructor para que llames a la función privada `initializer()` e inicialices al propietario.
 
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-### Requirements
+### Verificación
 
-- name the `ownable.cairo` contract as the following:
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
+
+```bash
+snforge test
+```
+
+### Consejos
+
+- Puedes usar la función privada `_transfer_ownership` que creaste en el `Paso 3` para evitar la duplicación de código.
+
+## Paso 7
+
+### Objetivo
+
+En este paso, necesitarás crear un nuevo archivo llamado `ownable.cairo` y mover todo el código relacionado al ejercicio de `Ownable`. El archivo `ownable.cairo` debe ser creado como un contrato normal de starknet.
+
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
+
+### Requisitos
+
+- Nombra el contrato `ownable.cairo` de la siguiente manera:
 
 ```rust
 #[starknet::contract]
@@ -219,93 +219,95 @@ mod OwnableComponent {
 }
 ```
 
-- add all the relevant code to this file, this includes:
-  - the interface
-  - the implementation of the interface
-  - storage to store the `owner` variable
-  - the private functions
+- Añade todo el código relevante a este archivo, esto incluye:
+  - La interfaz
+  - La implementación de la interfaz
+  - Storage para almacenar la variable `owner`
+  - Las funciones privadas
 
-### Verification
+### Verificación
 
-When completed, execute the test suite to verify you've met all the requirements for this section.
-
-```bash
-$ snforge test
-```
-
-## Step 8
-
-### Goal
-
-In this step, you will change the `ownable.cairo` from a starknet contract to a starknet component. Then, you will import the component and use it within your `counter.cairo`.
-
-Before working on this step, make sure to read [Chapter 12.4: Components](https://book.cairo-lang.org/ch99-01-05-00-components.html) and see how Components work.
-
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
-
-### Requirements
-
-- the name of your component impl block should be `OwnableImpl`
-- use the `component!()` in the `counter.cairo` to i
-- in your `counter.cairo` store the component's storage path as `ownable` inside the `Storage`
-- in your `counter.cairo` store the component's events path as `OwnableEvent`
-
-### Verification
-
-When completed, execute the test suite to verify you've met all the requirements for this section.
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+## Paso 8
 
-- to migrate a contract to a component you will need to:
+### Objetivo
 
-  - use the `#[starknet::component]` instead of the `#[starknet::contract]`
-  - change the `#[abi(embed_v0)]` to `#[embeddable_as(name)]` for the impl block
-  - add generic parameters for the impl block such as `TContractState` and `+HasComponent<TContractState>`
-  - change the `self` argument to `ComponentState<TContractState>`
+En este paso, cambiarás el `ownable.cairo` de un contrato de starknet a un componente de starknet. Luego, importarás el componente y lo usarás dentro de tu `counter.cairo`.
 
-    > **Note:** Read more on [Chapter 12.4: Migrating a Contract to a Component](https://book.cairo-lang.org/ch99-01-05-00-components.html#migrating-a-contract-to-a-component)
+Antes de trabajar en este paso, asegúrate de leer [Capítulo 12.4: Componentes](https://book.cairo-lang.org/ch99-01-05-00-components.html) y ver cómo funcionan los Componentes.
 
-- to use the component inside the `counter.cairo` you will need to
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
-  - declare the component with the `component!()` macro`
-  - add the path to the component's storage and events to your contract's `Storage` and `Events`
-  - instantiate the component's implementation
+### Requisitos
 
-    > **Note:** Read more on [Chapter 12.4: Using Components inside a contract](https://book.cairo-lang.org/ch99-01-05-00-components.html#using-components-inside-a-contract)
+- El nombre de tu bloque de implementación de componente debe ser `OwnableImpl`
+- Usa el `component!()` en el `counter.cairo` para importarlo
+- En tu `counter.cairo`, almacena la ruta de almacenamiento del componente como `ownable` dentro de `Storage`
+- En tu `counter.cairo`, almacena la ruta de eventos del componente como `OwnableEvent`
 
-## Step 9
+### Verificación
 
-### Goal
-
-In this step, you will use [OpenZeppelin's Ownable implementation](https://github.com/OpenZeppelin/cairo-contracts/tree/main/src/access/ownable) in your contract. You will only need to change the import path of the `OwnableComponent` to match OpenZeppelin's.
-
-> **Note:** If you fell behind, the folder prev_solution contains the solution to the previous step.
-
-### Verification
-
-When completed, execute the test suite to verify you've met all the requirements for this section.
+Al completar, ejecuta la suite de pruebas para verificar que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-### Hints
+### Consejos
 
-- OpenZepplin library has already been added to your `Scarb.toml` configuration
-- you only need modify your ownable import to match the [OwnableComponent](https://github.com/OpenZeppelin/cairo-contracts/blob/main/src/access/ownable/ownable.cairo)
+- Para migrar un contrato a un componente necesitarás:
 
-## Step 10 (final)
+  - Usar el `#[starknet::component]` en lugar del `#[starknet::contract]`
+  - Cambiar el `#[abi(embed_v0)]` a `#[embeddable_as(name)]` para el bloque de implementación
+  - Añadir parámetros genéricos para el bloque de implementación como `TContractState` y `+HasComponent<TContractState>`
+  - Cambiar el argumento `self` a `ComponentState<TContractState>`
 
-### Goal
+    > **Nota:** Lee más en [Capítulo 12.4: Migrar un Contrato a un Componente](https://book.cairo-lang.org/ch99-01-05-00-components.html#migrating-a-contract-to-a-component)
 
-Check that you have correctly created an account contract for Starknet by running the full test suite:
+- Para usar el componente dentro del `counter.cairo` necesitarás
+
+  - Declarar el componente con la macro `component!()`
+  - Añadir la ruta al almacenamiento y eventos del componente a tu contrato `Storage` y `Events`
+  - Instanciar la implementación del componente
+
+    > **Nota:** Lee más en [Capítulo 12.4: Usar Componentes dentro de un Contrato](https://book.cairo-lang.org/ch99-01-05-00-components.html#using-components-inside-a-contract)
+
+## Paso 9
+
+### Objetivo
+
+En este paso, usarás [la implementación Ownable de OpenZeppelin](https://github.com/OpenZeppelin/cairo-contracts/tree/main/src/access/ownable) en tu contrato. Solo necesitarás cambiar la ruta de importación del `OwnableComponent` para que coincida con la de OpenZeppelin.
+
+> **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
+
+### Verificación
+
+Al completar, ejecuta la suite de pruebas para verificar
+
+ que has cumplido con todos los requisitos de esta sección.
 
 ```bash
-$ snforge test
+snforge test
 ```
 
-If the test suite passes, congratulations, you have created your first custom Starknet Counter Contract which implement the component feature and succesfully uses the OpenZeppelin library.
+### Consejos
+
+- La biblioteca de OpenZepplin ya ha sido añadida a tu configuración de `Scarb.toml`
+- Solo necesitas modificar tu importación de ownable para que coincida con el [OwnableComponent](https://github.com/OpenZeppelin/cairo-contracts/blob/main/src/access/ownable/ownable.cairo)
+
+## Paso 10 (final)
+
+### Objetivo
+
+Verifica que has creado correctamente un contrato de cuenta para Starknet ejecutando la suite completa de pruebas:
+
+```bash
+snforge test
+```
+
+Si la suite de pruebas pasa, felicidades, has creado tu primer Contrato de Contador personalizado en Starknet que implementa la característica de componente y usa exitosamente la biblioteca de OpenZeppelin.
