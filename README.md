@@ -97,7 +97,7 @@ snforge test
 
 - Puedes leer quién es el llamante usando el syscall `get_caller_address` disponible en el módulo `starknet`.
 - Puedes verificar la dirección cero con la función `.is_zero()` en la variable misma.
-- Para leer más sobre Funciones Privadas, consulta [Capítulo 12.3.2 Funciones Privadas](https://book.cairo-lang.org/ch99-01-03-02-contract-functions.html#3-private-functions).
+- Para leer más sobre Funciones Privadas, consulta [Capítulo 12.3.2 Funciones Privadas](https://book.cairo-lang.org/ch14-02-contract-functions.html#3-private-functions).
 
 ## Paso 3
 
@@ -151,7 +151,7 @@ snforge test
 
 ### Consejos
 
-Los eventos son estructuras de datos personalizadas que son emitidas por un contrato. Puedes encontrar más información sobre Eventos en [Capítulo 12.3.3 - Eventos de Contratos](https://book.cairo-lang.org/ch99-01-03-03-contract-events.html).
+Los eventos son estructuras de datos personalizadas que son emitidas por un contrato. Puedes encontrar más información sobre Eventos en [Capítulo 12.3.3 - Eventos de Contratos](https://book.cairo-lang.org/ch14-03-contract-events.html#contract-events).
 
 ## Paso 5
 
@@ -239,7 +239,7 @@ snforge test
 
 En este paso, cambiarás el `ownable.cairo` de un contrato de starknet a un componente de starknet. Luego, importarás el componente y lo usarás dentro de tu `counter.cairo`.
 
-Antes de trabajar en este paso, asegúrate de leer [Capítulo 12.4: Componentes](https://book.cairo-lang.org/ch99-01-05-00-components.html) y ver cómo funcionan los Componentes.
+Antes de trabajar en este paso, asegúrate de leer [Capítulo 12.4: Componentes](https://book.cairo-lang.org/ch16-02-02-component-dependencies.html#component-dependencies) y ver cómo funcionan los Componentes.
 
 > **Nota:** Si te quedaste atrás, la carpeta prev_solution contiene la solución al paso anterior.
 
@@ -267,7 +267,7 @@ snforge test
   - Añadir parámetros genéricos para el bloque de implementación como `TContractState` y `+HasComponent<TContractState>`
   - Cambiar el argumento `self` a `ComponentState<TContractState>`
 
-    > **Nota:** Lee más en [Capítulo 12.4: Migrar un Contrato a un Componente](https://book.cairo-lang.org/ch99-01-05-00-components.html#migrating-a-contract-to-a-component)
+    > **Nota:** Lee más en [Capítulo 12.4: Migrar un Contrato a un Componente](https://book.cairo-lang.org/ch16-02-00-composability-and-components.html#migrating-a-contract-to-a-component)
 
 - Para usar el componente dentro del `counter.cairo` necesitarás
 
@@ -275,7 +275,7 @@ snforge test
   - Añadir la ruta al almacenamiento y eventos del componente a tu contrato `Storage` y `Events`
   - Instanciar la implementación del componente
 
-    > **Nota:** Lee más en [Capítulo 12.4: Usar Componentes dentro de un Contrato](https://book.cairo-lang.org/ch99-01-05-00-components.html#using-components-inside-a-contract)
+    > **Nota:** Lee más en [Capítulo 12.4: Usar Componentes dentro de un Contrato](https://book.cairo-lang.org/ch16-02-00-composability-and-components.html#using-components-inside-a-contract)
 
 ## Paso 9
 
